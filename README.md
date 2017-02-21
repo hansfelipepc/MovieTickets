@@ -1,6 +1,6 @@
 ### RN Movie Tickets
 
-![alt tag](http://rationalappdev.com/wp-content/uploads/2017/01/MovieTicketsDemo.gif)
+![alt tag](http://rationalappdev.com/wp-content/uploads/2017/01/Screenshot-2017-01-19-06.59.50.png)
 
 
 Remember: if you are using Windows, don't forget add a local.properties file including this line:
