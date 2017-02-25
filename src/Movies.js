@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
+  ActivityIndicator,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   View
@@ -7,6 +10,16 @@ import {
 import { movies } from './data';
 import MoviePoster from './MoviePoster';
 import MoviePopup from './MoviePopup';
+
+@connect(
+  state => ({
+    movies: state.movies,
+    loading: state.loading,
+  }),
+  dispatch => ({
+    refresh: () => dispatch({type: 'GET_MOVIE_DATA'}),
+  }),
+)
 
 export default class Movies extends Component {
 
@@ -61,22 +74,35 @@ export default class Movies extends Component {
       });
     }
   }
-
   render() {
+    const { movies, loading, refresh } = this.props;
     return (
       <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          // Hide all scroll indicators
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        >
-          {movies.map((movie, index) => <MoviePoster
-            movie={movie}
-            onOpen={this.openMovie}
-            key={index}
-          />)}
-        </ScrollView>
+        {movies
+          ? <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            // Hide all scroll indicators
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={refresh}
+                />
+              }
+          >
+            {movies.map((movie, index) => <MoviePoster
+              movie={movie}
+              onOpen={this.openMovie}
+              key={index}
+            />)}
+          </ScrollView>
+          : <ActivityIndicator
+            animating={loading}
+            style={styles.loader}
+            size="large"
+          />
+        }
         <MoviePopup
           movie={this.state.movie}
           isOpen={this.state.popupIsOpen}
@@ -94,7 +120,13 @@ export default class Movies extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,                // take up all screen
     paddingTop: 20,         // start below status bar
+  },
+  loader: {
+    flex: 1,
+    alignItems: 'center',     // center horizontally
+    justifyContent: 'center', // center vertically
   },
   scrollContent: {
     flexDirection: 'row',   // arrange posters in rows
