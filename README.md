@@ -1,4 +1,6 @@
-### RN Movie Tickets
+# RN Movie Tickets
+
+### React Native app for booking movie tickets
 
 ![alt tag](http://rationalappdev.com/wp-content/uploads/2017/01/Screenshot-2017-01-19-06.59.50.png)
 
